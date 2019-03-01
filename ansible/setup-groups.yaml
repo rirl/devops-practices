@@ -39,9 +39,3 @@
         create: yes
         validate: 'visudo -cf %s'
 
-#   - name: copy authorized key file
-#     authorized_key:
-#      user: "{{ansible_account}}"
-#      state: present
-#      key: "{{ lookup('file', 'ansible/config/keys/ansible_remote_id_rsa.pub') }}"
-
