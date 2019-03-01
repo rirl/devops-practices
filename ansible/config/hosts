@@ -1,0 +1,94 @@
+# This is the default ansible 'hosts' file.
+#
+# It should live in /etc/ansible/hosts
+#
+#   - Comments begin with the '#' character
+#   - Blank lines are ignored
+#   - Groups of hosts are delimited by [header] elements
+#   - You can enter hostnames or ip addresses
+#   - A hostname/ip can be a member of multiple groups
+
+# Ex 1: Ungrouped hosts, specify before any group headers.
+
+## green.example.com
+## blue.example.com
+## 192.168.100.1
+## 192.168.100.10
+
+#
+### RiRL: devops VMWare  hosts (02/13/19)
+# All the nodes in my devops virtual network that are managed by ansible.
+# 
+atreides # Ubuntu 18.04 -- Control machine (localhost)
+hagal    # CentOS 7 18.01
+fenring  # Fedora 29
+ecaz     # OpenSUSE 15.0 
+#
+#
+# These nodes are not managed by ansible (?)
+corrino # MacOS 10.12 Sierra
+ginaz   # Windows 10 (with hyper-V)
+
+#
+### Docker hosts
+#   All the devops hosts that have docker capabilities (docker installed).
+#
+[docker]
+atreides # Ubuntu 18.04 
+hagal    # CentOS 7 18.01
+fenring  # Fedora 29
+ecaz     # OpenSUSE 15.0 
+
+### CI hosts
+#
+[jenkins-masters]
+atreides # Ubuntu 18.04 
+
+[jenkins-agents]
+atreides # Ubuntu 18.04 
+hagal    # CentOS 7 18.01
+fenring  # Fedora 29
+ecaz     # OpenSUSE 15.0 
+
+
+[ansible-managed]
+hagal    # CentOS 7 18.01
+fenring  # Fedora 29
+ecaz     # OpenSUSE 15.0
+
+[ansible-managers]
+atreides # Ubuntu 18.04
+
+[ansible-mock]
+vm-test-01 # Test VM 01
+vm-test-02 # Test VM 02
+
+
+
+# Ex 2: A collection of hosts belonging to the 'webservers' group
+
+## [webservers]
+## alpha.example.org
+## beta.example.org
+## 192.168.1.100
+## 192.168.1.110
+
+# If you have multiple hosts following a pattern you can specify
+# them like this:
+
+## www[001:006].example.com
+
+# Ex 3: A collection of database servers in the 'dbservers' group
+
+## [dbservers]
+## 
+## db01.intranet.mydomain.net
+## db02.intranet.mydomain.net
+## 10.25.1.56
+## 10.25.1.57
+
+# Here's another example of host ranges, this time there are no
+# leading 0s:
+
+## db-[99:101]-node.example.com
+

@@ -1,0 +1,20 @@
+---
+- name: setup ansible control account
+  hosts: ansible-mock
+  serial: 1
+  vars:
+      ansible_account: ansible
+
+  tasks:
+    - name: setup ansible account
+      debug:
+        msg: "create ansible account: {{ ansible_account }} on: {{ inventory_hostname }}"
+
+    - name: create ssh key file
+      debug:
+        msg: "generate ssh keys for: {{ ansible_account }} on: {{ inventory_hostname }}"
+
+    - name: add ansible account to sudoers
+      debug:
+        msg: "add  ansible account: {{ ansible_account }} to sudoers: {{ inventory_hostname }}"
+

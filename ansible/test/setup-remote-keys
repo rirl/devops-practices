@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+echo "Copy Ansible id..."
+ssh-copy-id -f -i ~/.ssh/ansible_remote_id_rsa ansible@vm-test-01
+ssh-copy-id -f -i ~/.ssh/ansible_remote_id_rsa ansible@vm-test-02
+
+status=0
+
+echo ""
+echo "Test Ansible id on [ansible-01]"
+ssh ansible-01 "sudo cat /etc/motd"
+if [ $? -ne 0 ] ; then
+ echo "[$0]: Invalid Ansible id on ansible-01"
+ status=1
+fi
+
+echo ""
+echo "Test Ansible id on [ansible-02]"
+ssh ansible-02 "sudo cat /etc/motd"
+if [ $? -ne 0 ] ; then
+ echo "[$0]: Invalid Ansible id on ansible-02"
+ status=1
+fi
+
+exit $status
+

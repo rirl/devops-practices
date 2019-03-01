@@ -1,0 +1,47 @@
+---
+- name: setup ansible control account
+  hosts: ansible-mock
+  become: yes
+  serial: 1
+  vars:
+      ansible_account: ansible
+      ansible_uid: 7000
+      ansible_groups: sudo, adm, automata
+#     ansible_remote_key: ansible/config/keys/ansible_remote_id_rsa.pub
+
+  tasks:
+    - name: setup ansible account
+      user:
+        name:  "{{ ansible_account }}"
+        uid: "{{ ansible_uid }}"
+        password: '$6$XsFOay.u4lE8.2$i4T7sPSc4ouvQ4dG7WZevSWu3BnOLUp6EsUIJ8LoOidSXJrRdtux3jDiK5ZsuxQ8SgpDLxZXolx/TaOg0GBVa/'
+        comment: "Ansible automation account."
+        groups:
+        - "{{ ansible_groups }}"
+        state: present
+        shell: /bin/bash
+        system: yes
+        createhome: yes
+        home: "/home/{{ ansible_account }}"
+        generate_ssh_key: yes
+        ssh_key_bits: 4096
+        ssh_key_comment: "ansible@rirl.dev"
+        ssh_key_type: rsa
+        ssh_key_file: .ssh/ansible_id_rsa
+      register: ansible_account_info
+
+    - name: add ansible account to sudoers
+      lineinfile:
+        path: "/etc/sudoers.d/{{ ansible_account }}"
+        line: "{{ ansible_account }} ALL=(ALL) NOPASSWD: ALL"
+        state: present
+        mode: 0440
+        create: yes
+        validate: 'visudo -cf %s'
+
+#   - name: copy authorized key file
+#     authorized_key:
+#      user: "{{ansible_account}}"
+#      state: present
+#      key: "{{ lookup('file', 'ansible/config/keys/ansible_remote_id_rsa.pub') }}"
+

@@ -1,0 +1,9 @@
+#/usr/bin/env bash
+#
+# Simple ansible script for dealing with the test VM.
+#
+set -x
+ansible ansible-mock -i ansible/config/hosts -m command -a "uname -a" -v
+ansible ansible-mock -i ansible/config/hosts -m command -a "id" -v
+ansible ansible-mock -i ansible/config/hosts -m command -a "python --version" -v
+set +x

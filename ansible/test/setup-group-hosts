@@ -1,0 +1,26 @@
+#/usr/bin/env bash
+#
+# Simple ansible script for dealing with the test VM.
+#   WIP: A script template paradigm...
+#
+echo "[$0]::Begin ==> [$*]"
+
+mode=$1
+playbook="ansible/setup-groups-mock.yaml"
+if [ ! -z "${mode}" ]; then
+  playbook="ansible/setup-groups.yaml"
+fi
+echo "[$0]::Playing ==> [${playbook}]"
+
+ansible-playbook -i ansible/config/hosts ${playbook} --syntax-check
+status=$?
+
+if [ $status -eq 0 ]; then
+  ansible-playbook -i ansible/config/hosts ${playbook} --list-hosts
+  ansible-playbook -i ansible/config/hosts ${playbook} -v -v -v
+  status=$?
+fi
+
+if [ $status .eq 0 ]; then source ansible/test/setup-remote-keys
+echo "[$0]::End   ==> [$status]"
+exit $status
