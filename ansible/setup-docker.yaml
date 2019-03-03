@@ -5,7 +5,15 @@
   vars:
      docker_gpg_key: "https://download.docker.com/linux/debian/gpg"
      docker_stable_url: "https://download.docker.com/linux/debian"
-
+     docker_package_dependencies:
+        - "apt-transport-https"
+        - "ca-certificates"
+        - "cron"
+        - "gnupg2"
+        - "software-properties-common"
+     docker_pip_dependencies:
+        - "python-setuptools"
+        - "python{{ '3' if ansible_python.version.major == 3 else '' }}-pip"
 
   tasks:
     - name: Update host package index.
@@ -15,8 +23,9 @@
         update_cache: yes
 
     - name: Allow repository access  over HTTPS.
-      debug:
-        msg: "Allow  HTTPS repository access on: {{ inventory_hostname }}"
+      become: true
+      apt:
+        name: "{{ docker_package_dependencies + docker_pip_dependencies }}"
 
     - name: Add offical Docker GPG key.
       debug:

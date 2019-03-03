@@ -17,6 +17,6 @@ status=$?
 
 if [ $status -eq 0 ]; then
   ansible-playbook -i ansible/config/hosts ${playbook} --list-hosts
-  ansible-playbook -i ansible/config/hosts ${playbook}
+  ansible-playbook -i ansible/config/hosts ${playbook} -v -v -v
   status=$?
 fi
