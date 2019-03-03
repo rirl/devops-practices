@@ -1,0 +1,65 @@
+---
+- name: docker prepare phase
+  hosts: docker-mock
+  serial: 1
+  vars:
+     docker_gpg_key: "https://download.docker.com/linux/debian/gpg"
+     docker_stable_url: "https://download.docker.com/linux/debian"
+
+
+  tasks:
+    - name: Update host package index.
+      debug:
+        msg: "Update package host index on: {{ inventory_hostname }}"
+
+    - name: Allow repository access  over HTTPS.
+      debug:
+        msg: "Allow  HTTPS repository access on: {{ inventory_hostname }}"
+
+    - name: Add offical Docker GPG key.
+      debug:
+        msg: "Download key: {{ docker_gpg_key }} on: {{ inventory_hostname }}"
+
+    - name: Setup stable docker repository.
+      debug:
+        msg: "Using (stable) repository: {{ docker_stable_url }} on: {{ inventory_hostname }}"
+
+- name: docker installation phase
+  hosts: docker-mock
+  serial: 1
+  vars:
+    docker_verify: "docker run hello-world"
+    docker_stable_url: "https://download.docker.com/linux/debian"
+
+  tasks:
+    - name: Update package index.
+      debug:
+        msg: "Update package index on: {{ inventory_hostname }}"
+
+    - name: Install docker.
+      debug:
+        msg: "Install {{ docker_stable_url }} on: {{ inventory_hostname }}"
+
+- name: docker post phase
+  hosts: docker-mock
+  serial: 1
+  vars:
+    docker_group: docker
+    docker_users: "ansible"
+
+  tasks:
+    - name: Add docker group.
+      debug:
+        msg: "Add group: {{ docker_group }} on: {{ inventory_hostname }}"
+
+    - name: Add users to docker group.
+      debug:
+        msg: "Add users: {{ docker_users }} to: {{ docker_group}} on: {{ inventory_hostname }}"
+
+    - name: Configure  docker start on boot.
+      debug:
+        msg: "Boot docker on: {{ inventory_hostname }}"
+
+
+
+
