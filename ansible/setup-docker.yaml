@@ -9,8 +9,10 @@
 
   tasks:
     - name: Update host package index.
-      debug:
-        msg: "Update package host index on: {{ inventory_hostname }}"
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: yes
 
     - name: Allow repository access  over HTTPS.
       debug:
