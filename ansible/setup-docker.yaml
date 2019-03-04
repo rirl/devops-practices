@@ -94,17 +94,16 @@
         append: true
       loop: "{{ docker_users }}"
 
-    - name: Configure docker start on boot.
+    - name: Configure docker daemon to start on boot.
       systemd:
         name: docker
         enabled: yes
-         masked: no
+        masked: no
 
     - name: Start docker service.
       systemd:
         state: started
         name: docker
-
 
 
 
