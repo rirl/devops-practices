@@ -1,6 +1,7 @@
 ---
 - name: docker prepare phase
   become: true
+  become_user: root
   hosts: docker-mock
   serial: 1
   vars:
@@ -24,6 +25,13 @@
      docker_apt_repository: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_channel | join (' ') }}"
 
   tasks:
+    - name: Display remote information
+      shell: |
+        echo "Ansible is running as [$USER]"
+        set -x
+        id ${USER}
+        set +x
+
     - name: Update host package index.
       apt:
         upgrade: yes
@@ -43,42 +51,59 @@
          repo: "{{ docker_apt_repository }}"
          update_cache: true
 
-
 - name: docker installation phase
+  become: true
+  become_user: root
   hosts: docker-mock
   serial: 1
   vars:
     docker_verify: "docker run hello-world"
+    docker_edition: "ce"
+    docker_channel: ["stable"]
+    docker_version: ""
+    docker_state: "present"
     docker_stable_url: "https://download.docker.com/linux/debian"
+    docker_apt_repository: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_channel | join (' ') }}"
 
   tasks:
     - name: Update package index.
-      debug:
-        msg: "Update package index on: {{ inventory_hostname }}"
+      apt:
+        upgrade: yes
+        update_cache: yes
 
     - name: Install docker.
-      debug:
-        msg: "Install {{ docker_stable_url }} on: {{ inventory_hostname }}"
+      apt:
+       name: "docker-{{ docker_edition }}"
+       state: "{{ docker_state }}"
 
 - name: docker post phase
+  become: true
+  become_user: root
   hosts: docker-mock
   serial: 1
   vars:
-    docker_group: docker
-    docker_users: "ansible"
+    docker_group: "docker"
+    docker_users:
+     - "ansible"
 
   tasks:
-    - name: Add docker group.
-      debug:
-        msg: "Add group: {{ docker_group }} on: {{ inventory_hostname }}"
-
     - name: Add users to docker group.
-      debug:
-        msg: "Add users: {{ docker_users }} to: {{ docker_group}} on: {{ inventory_hostname }}"
+      user:
+        name: "{{ item }}"
+        groups: "{{ docker_group }}"
+        append: true
+      loop: "{{ docker_users }}"
 
-    - name: Configure  docker start on boot.
-      debug:
-        msg: "Boot docker on: {{ inventory_hostname }}"
+    - name: Configure docker start on boot.
+      systemd:
+        name: docker
+        enabled: yes
+         masked: no
+
+    - name: Start docker service.
+      systemd:
+        state: started
+        name: docker
 
 
 

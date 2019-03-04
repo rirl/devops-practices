@@ -64,7 +64,7 @@ vm-test-01 # Test VM 01
 vm-test-02 # Test VM 02
 
 [docker-mock]
-vm-test-02 # Test VM 02
+ansible-02 # Test VM 02 as ansible users
 
 
 

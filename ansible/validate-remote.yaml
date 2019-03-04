@@ -1,0 +1,17 @@
+---
+- name: docker remote information
+  become: true
+  become_user: ansible
+  hosts: docker-mock
+  serial: 1
+  tasks:
+    - name: Display remote information
+      shell: |
+        echo "You're [$USER]"
+        set -x
+        id ${USER}
+        sudo apt update
+        sudo apt list --upgradable
+        sudo apt upgrade --yes
+        set +x
+

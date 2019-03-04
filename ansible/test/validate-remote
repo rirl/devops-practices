@@ -5,11 +5,7 @@
 #
 echo "[$0]::Begin ==> [$*]"
 
-mode=$1
-playbook="ansible/setup-docker-mock.yaml"
-if [ ! -z "${mode}" ]; then
-  playbook="ansible/setup-docker.yaml"
-fi
+playbook="ansible/validate-remote.yaml"
 echo "[$0]::Playing ==> [${playbook}]"
 
 ansible-playbook -i ansible/config/hosts ${playbook} --syntax-check
@@ -17,7 +13,7 @@ status=$?
 
 if [ $status -eq 0 ]; then
   ansible-playbook -i ansible/config/hosts ${playbook} --list-hosts
-  ansible-playbook -i ansible/config/hosts ${playbook}  --user ansible -v -v -v
+  ansible-playbook -i ansible/config/hosts ${playbook} -v -v -v
   status=$?
 fi
 
