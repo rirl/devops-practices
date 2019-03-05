@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#
+#
+echo "[$0]::Begin ==> [$*]"
+
+
+echo "[$0]::Perform ==> [setup-group-hosts]"
+ansible/test/setup-group-hosts nomock; status=$?
+if [ $status -ne 0 ]; then
+  status=$?
+  echo "[$0]::FAILED (setup-groups-hosts)   ==> [$status]"
+  exit $status
+fi
+
+echo "[$0]::Perform ==> [setup-docker]"
+ansible/test/setup-docker nomock; status=$?
+if [ $status -ne 0 ]; then
+  status=$?
+  echo "[$0]::FAILED (setup-docker)   ==> [$status]"
+  exit $status
+fi
+
+
+echo "[$0]::End   ==> [$status]"
+exit $status
