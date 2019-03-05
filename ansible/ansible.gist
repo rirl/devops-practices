@@ -1,0 +1,10 @@
+
+# Some gists for current state of ansible automation
+# Ansible automation account setup (not test)
+# Tune setup-groups.yaml
+#
+ansible-playbook -i ansible/config/hosts ansible/setup-groups.yaml  --limit ecaz,atreides --syntax-check
+ansible-playbook -i ansible/config/hosts ansible/setup-groups.yaml  --limit ecaz,atreides --check --diff
+ansible-playbook -i ansible/config/hosts ansible/setup-groups.yaml  --limit ecaz,atreides --check --diff
+ansible-playbook -i ansible/config/hosts ansible/setup-groups.yaml  --limit ecaz,atreides --check --diff --user rirl
+ansible-playbook -i ansible/config/hosts ansible/setup-groups.yaml  --limit ecaz,atreides --check --diff --user rirl --ask-become-pass
