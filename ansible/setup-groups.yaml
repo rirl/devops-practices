@@ -1,12 +1,13 @@
 ---
 - name: setup ansible control account
+# hosts: ansible-managed, ansible-managers
   hosts: ansible-mock
-  become: yes
   serial: 1
+  become: yes
   vars:
       ansible_account: ansible
       ansible_uid: 7000
-      ansible_groups: sudo, adm, automata
+      ansible_groups: sudo, adm
 #     ansible_remote_key: ansible/config/keys/ansible_remote_id_rsa.pub
 
   tasks:

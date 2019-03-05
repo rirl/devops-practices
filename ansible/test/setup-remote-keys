@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# TODO -- Make this parameter driven?
 echo "Copy Ansible id..."
 ssh-copy-id -f -i ~/.ssh/ansible_remote_id_rsa ansible@vm-test-01
 ssh-copy-id -f -i ~/.ssh/ansible_remote_id_rsa ansible@vm-test-02
