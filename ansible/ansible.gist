@@ -8,3 +8,5 @@ ansible-playbook -i ansible/config/hosts ansible/setup-groups.yaml  --limit ecaz
 ansible-playbook -i ansible/config/hosts ansible/setup-groups.yaml  --limit ecaz,atreides --check --diff
 ansible-playbook -i ansible/config/hosts ansible/setup-groups.yaml  --limit ecaz,atreides --check --diff --user rirl
 ansible-playbook -i ansible/config/hosts ansible/setup-groups.yaml  --limit ecaz,atreides --check --diff --user rirl --ask-become-pass
+
+ansible-playbook -i ansible/config/hosts ansible/setup-docker.yaml  --limit ansible-01,ansible-02  --check --diff  --user ansible

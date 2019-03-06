@@ -1,7 +1,6 @@
 ---
 - name: docker prepare phase
-  become: true
-  become_user: root
+  become: yes
   hosts: docker-mock
   serial: 1
   vars:
@@ -52,8 +51,7 @@
          update_cache: true
 
 - name: docker installation phase
-  become: true
-  become_user: root
+  become: yes
   hosts: docker-mock
   serial: 1
   vars:
@@ -77,8 +75,7 @@
        state: "{{ docker_state }}"
 
 - name: docker post phase
-  become: true
-  become_user: root
+  become: yes
   hosts: docker-mock
   serial: 1
   vars:

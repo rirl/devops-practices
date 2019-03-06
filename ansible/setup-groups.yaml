@@ -1,6 +1,6 @@
 ---
 - name: setup ansible control account
-# hosts: ansible-mock
+  hosts: ansible-mock
 # hosts: ansible-managed
 # hosts: ansible-managers
   serial: 1
