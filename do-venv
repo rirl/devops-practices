@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+if [ ! -d .venv/ ] ; then
+  echo "create:venv"
+  set-x; virtualenv .venv $@; set +x
+fi
+echo "activate:venv"
+source .venv/bin/activate
+
+export PATH=$(pwd)/.venv/bin:$PATH
+
+echo "info:venv"
+which python; python --version
+which pip; pip --version
+
